@@ -13,7 +13,7 @@ class EcommerceApp extends StatelessWidget {
       minTextAdapt: true,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'E-commerce App',
+        title: 'For you',
         theme: ThemeManager.mainTheme,
         routes: {
           HomeScreen.routeName: (_) => const HomeScreen(),
