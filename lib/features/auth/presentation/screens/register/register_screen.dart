@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shopping_app/core/theme/color_manager.dart';
 import 'package:shopping_app/core/utils/validator.dart';
 import 'package:shopping_app/core/widgets/default_text_field.dart';
-import 'package:shopping_app/features/auth/presentation/screens/register/register_screen.dart';
 import 'package:shopping_app/features/auth/presentation/widgets/default_elevated_button.dart';
-import 'package:shopping_app/features/auth/presentation/widgets/default_text_button.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'RegisterScreen';
