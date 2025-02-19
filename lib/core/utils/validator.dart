@@ -1,7 +1,7 @@
 class Validator {
   static bool isName(String? value) {
-    RegExp regex = RegExp(r'^[A-Za-z]+$');
-    if (value == null) {
+    RegExp regex = RegExp(r'^[A-Za-z ]+$');
+    if (value == null || value.trim().length < 2) {
       return false;
     } else {
       return regex.hasMatch(value);
