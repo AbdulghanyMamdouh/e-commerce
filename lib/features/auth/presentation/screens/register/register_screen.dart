@@ -6,18 +6,19 @@ import 'package:shopping_app/core/widgets/default_text_field.dart';
 import 'package:shopping_app/features/auth/presentation/screens/register/register_screen.dart';
 import 'package:shopping_app/features/auth/presentation/widgets/default_elevated_button.dart';
 import 'package:shopping_app/features/auth/presentation/widgets/default_text_button.dart';
-import 'package:shopping_app/features/home/presentation/screens/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String routeName = 'loginScreen';
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  static const String routeName = 'RegisterScreen';
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: EdgeInsets.only(
                   top: 91.h,
-                  bottom: 87.h,
+                  bottom: 46.9.h,
                   left: 97.w,
                   right: 97.w,
                 ),
@@ -48,23 +49,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      'Welcome Back To Route',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    Text(
-                      'Please sign in with your email',
-                      style: titleMediumStyle?.copyWith(fontSize: 16.sp),
-                    ),
-                    SizedBox(height: 40.h),
                     Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            'Full Name ',
+                            style: titleMediumStyle?.copyWith(
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 24.h),
+                          DefaultTextField(
+                            controller: _nameController,
+                            hintText: 'Enter Your Full Name',
+                            keyboardType: TextInputType.name,
+                            validator: (value) {
+                              if (!Validator.isName(value)) {
+                                return 'Please enter a valid name.\natleast 2 char';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 24.h),
+                          Text(
+                            'Mobile Number',
+                            style: titleMediumStyle?.copyWith(
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 24.h),
+                          DefaultTextField(
+                            controller: _mobileController,
+                            hintText: 'Enter Your Mobile Number',
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (!Validator.isPhoneEg(value)) {
+                                return 'Please enter a valid phone number,only eg.';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 24.h),
                           Text(
                             'Email',
                             style: titleMediumStyle?.copyWith(
@@ -105,32 +130,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DefaultTextButton(
-                                onPressed: () {},
-                                label: 'forget password?',
-                              ),
-                            ],
-                          ),
                           SizedBox(height: 56.h),
                           DefaultElevatedButton(
                             onPressed: () {
-                              _login();
+                              _signup();
                             },
-                            label: 'login',
+                            label: 'sign up',
                           ),
-                          SizedBox(height: 32.h),
-                          Center(
-                            child: DefaultTextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, RegisterScreen.routeName);
-                              },
-                              label: 'Don’t have an account? Create Account',
-                            ),
-                          ),
+                          SizedBox(height: 68.h),
                         ],
                       ),
                     ),
@@ -144,9 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, HomeScreen.routeName);
-    }
+  void _signup() {
+    if (_formKey.currentState!.validate()) {}
   }
 }
