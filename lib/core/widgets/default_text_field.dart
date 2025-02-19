@@ -4,6 +4,7 @@ import 'package:shopping_app/core/theme/color_manager.dart';
 
 class DefaultTextField extends StatefulWidget {
   const DefaultTextField({
+    super.key,
     required this.hintText,
     this.suffixIcon,
     this.validator,
@@ -29,18 +30,31 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+          vertical: 23.h,
+          horizontal: 16.h,
+        ),
         fillColor: ColorManager.white,
         filled: true,
         hintText: widget.hintText,
+        errorStyle: TextStyle(
+          color: ColorManager.red,
+          fontSize: 16.sp,
+        ),
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () => setState(() => isObscure = !isObscure),
                 icon: isObscure
-                    ? const Icon(Icons.visibility_outlined)
-                    : const Icon(Icons.visibility_off_outlined),
+                    ? const Icon(Icons.visibility_off_outlined)
+                    : const Icon(Icons.visibility_outlined),
               )
             : null,
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColorManager.blueGrey),
+          borderRadius: BorderRadius.circular(15.r),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: ColorManager.blueGrey),
           borderRadius: BorderRadius.circular(15.r),
