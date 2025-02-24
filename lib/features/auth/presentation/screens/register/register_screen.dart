@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/utils/custom_dialog.dart';
+import 'package:shopping_app/core/utils/shared_preference_utils.dart';
 import 'package:shopping_app/core/utils/validator.dart';
 import 'package:shopping_app/core/widgets/default_text_field.dart';
 import 'package:shopping_app/features/auth/presentation/cubit/auth_states.dart';
@@ -136,13 +137,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 /// todo : show loading
                                 CustomDialog.showLoading(context);
                               } else if (state is RegisterStateSuccess) {
-                                /// todo : show loading
-                                /// go to home page
+                                // todo : hide loading
                                 CustomDialog.hideLoading(context);
+
+                                // todo : show message
+                                CustomDialog.showMessage(
+                                  state.authResultEntity.user!.name ??
+                                      'unknown',
+                                );
+
+                                //todo: save token
+                                SharedPreferenceUtils.saveData(
+                                  key: 'token',
+                                  value: state.authResultEntity.token,
+                                );
+
+                                // todo: go to home page
                                 Navigator.of(context)
                                     .pushNamed(HomeScreen.routeName);
                               } else if (state is RegisterStateError) {
+                                // todo : hide loading
                                 CustomDialog.hideLoading(context);
+
+                                // todo : show error message
                                 CustomDialog.showMessage(
                                     state.errorMessage ?? 'error');
                               }

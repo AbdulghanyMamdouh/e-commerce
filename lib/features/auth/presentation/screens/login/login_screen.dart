@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/utils/custom_dialog.dart';
+import 'package:shopping_app/core/utils/shared_preference_utils.dart';
 import 'package:shopping_app/core/utils/validator.dart';
 import 'package:shopping_app/core/widgets/default_text_field.dart';
 import 'package:shopping_app/features/auth/presentation/cubit/auth_states.dart';
@@ -77,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: authViewModel.emailController,
                             hintText: 'Enter Your Email',
                             keyboardType: TextInputType.emailAddress,
+                            autoValidate: false,
                             validator: (value) {
                               if (!Validator.isEmail(value)) {
                                 return 'Please enter a valid email address.';
@@ -96,13 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: 'Enter Your Password',
                             keyboardType: TextInputType.visiblePassword,
                             isPassword: true,
+                            autoValidate: false,
                             validator: (value) {
                               if (!Validator.isPassowrd(value)) {
-                                return '''
- 8 characters long,
- 1 uppercase & 1 lowercase character,
- 1 special character.
-                                ''';
+                                return 'invalid password!.';
                               }
                               return null;
                             },
@@ -118,14 +117,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 56.h),
                           BlocListener(
+                            bloc: authViewModel,
                             listener: (context, state) {
                               if (state is LoginStateLoading) {
                                 //TODO: show loading
                                 CustomDialog.showLoading(context);
                               } else if (state is LoginStateSuccess) {
-                                ///TODO: hide loading
-                                ///navigate to home
+                                //TODO: hide loading
+                                //navigate to home
                                 CustomDialog.hideLoading(context);
+                                //todo: save token
+                                SharedPreferenceUtils.saveData(
+                                  key: 'token',
+                                  value: state.authResultEntity.token,
+                                );
+                                //todo: go to home
                                 Navigator.of(context)
                                     .pushNamed(HomeScreen.routeName);
                               } else if (state is LoginStateError) {
@@ -134,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     state.errorMessage ??= 'some error');
                               }
                             },
-                            bloc: authViewModel,
                             child: DefaultElevatedButton(
                               onPressed: () {
                                 authViewModel.login();

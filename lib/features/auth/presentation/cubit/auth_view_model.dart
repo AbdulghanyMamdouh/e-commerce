@@ -34,7 +34,8 @@ class AuthViewModel extends Cubit<AuthStates> {
       var either = await authUseCase.login(
           emailController.text, passwordController.text);
       either.fold((l) {
-        emit(LoginStateError(errorMessage: l.errorMessage));
+        emit(LoginStateError(
+            errorMessage: l.errorMessage ?? 'something went wrong'));
       }, (response) {
         emit(LoginStateSuccess(authResultEntity: response));
       });
