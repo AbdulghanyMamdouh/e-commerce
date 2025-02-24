@@ -7,7 +7,6 @@ import 'package:shopping_app/features/auth/data/models/request/login_request.dar
 import 'package:shopping_app/features/auth/data/models/request/register_request.dart';
 import 'package:shopping_app/features/auth/data/models/response/login/login_response_dto.dart';
 import 'package:shopping_app/features/auth/data/models/response/register/register_response_dto.dart';
-import 'package:shopping_app/features/auth/domain/entities/auth_result_entity.dart';
 
 class AuthApiManager {
   AuthApiManager._();
