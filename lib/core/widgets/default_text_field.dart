@@ -12,6 +12,7 @@ class DefaultTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
     this.maxLength,
+    this.autoValidate = true,
   });
   final String hintText;
   final Widget? suffixIcon;
@@ -20,6 +21,7 @@ class DefaultTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final int? maxLength;
+  final bool autoValidate;
 
   @override
   State<DefaultTextField> createState() => _DefaultTextFieldState();
@@ -30,7 +32,9 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: widget.autoValidate == true
+          ? AutovalidateMode.onUserInteraction
+          : AutovalidateMode.disabled,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
           vertical: 23.h,

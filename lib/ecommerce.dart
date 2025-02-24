@@ -6,8 +6,8 @@ import 'package:shopping_app/features/home/presentation/screens/home_screen.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EcommerceApp extends StatelessWidget {
-  const EcommerceApp({super.key});
-
+  const EcommerceApp({super.key, required this.initialRoute});
+  final String? initialRoute;
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -22,7 +22,7 @@ class EcommerceApp extends StatelessWidget {
           LoginScreen.routeName: (_) => const LoginScreen(),
           RegisterScreen.routeName: (_) => const RegisterScreen(),
         },
-        initialRoute: LoginScreen.routeName,
+        initialRoute: initialRoute,
       ),
     );
   }

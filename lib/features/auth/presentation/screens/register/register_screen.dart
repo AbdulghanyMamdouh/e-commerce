@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopping_app/core/di/di.dart';
+import 'package:shopping_app/core/utils/custom_dialog.dart';
+import 'package:shopping_app/core/utils/shared_preference_utils.dart';
 import 'package:shopping_app/core/utils/validator.dart';
 import 'package:shopping_app/core/widgets/default_text_field.dart';
+import 'package:shopping_app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:shopping_app/features/auth/presentation/cubit/auth_view_model.dart';
 import 'package:shopping_app/features/auth/presentation/widgets/default_elevated_button.dart';
+import 'package:shopping_app/features/home/presentation/screens/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'RegisterScreen';
@@ -13,12 +20,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _emailController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _mobileController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
+  AuthViewModel authViewModel = AuthViewModel(authUseCase: injectUseCase());
   @override
   Widget build(BuildContext context) {
     final titleMediumStyle = Theme.of(context).textTheme.titleMedium;
@@ -47,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Form(
-                      key: _formKey,
+                      key: authViewModel.formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -58,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: 24.h),
                           DefaultTextField(
-                            controller: _nameController,
+                            controller: authViewModel.nameController,
                             hintText: 'Enter Your Full Name',
                             keyboardType: TextInputType.name,
                             validator: (value) {
@@ -76,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: 24.h),
                           DefaultTextField(
-                            controller: _mobileController,
+                            controller: authViewModel.phoneController,
                             hintText: 'Enter Your Mobile Number',
                             keyboardType: TextInputType.phone,
                             validator: (value) {
@@ -94,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: 24.h),
                           DefaultTextField(
-                            controller: _emailController,
+                            controller: authViewModel.emailController,
                             hintText: 'Enter Your Email',
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
@@ -112,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: 24.h),
                           DefaultTextField(
-                            controller: _passwordController,
+                            controller: authViewModel.passwordController,
                             hintText: 'Enter Your Password',
                             keyboardType: TextInputType.visiblePassword,
                             isPassword: true,
@@ -128,11 +130,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           SizedBox(height: 56.h),
-                          DefaultElevatedButton(
-                            onPressed: () {
-                              _signup();
+                          BlocListener(
+                            bloc: authViewModel,
+                            listener: (context, state) {
+                              if (state is RegisterStateLoading) {
+                                /// todo : show loading
+                                CustomDialog.showLoading(context);
+                              } else if (state is RegisterStateSuccess) {
+                                // todo : hide loading
+                                CustomDialog.hideLoading(context);
+
+                                // todo : show message
+                                CustomDialog.showMessage(
+                                  state.authResultEntity.user!.name ??
+                                      'unknown',
+                                );
+
+                                //todo: save token
+                                SharedPreferenceUtils.saveData(
+                                  key: 'token',
+                                  value: state.authResultEntity.token,
+                                );
+
+                                // todo: go to home page
+                                Navigator.of(context)
+                                    .pushNamed(HomeScreen.routeName);
+                              } else if (state is RegisterStateError) {
+                                // todo : hide loading
+                                CustomDialog.hideLoading(context);
+
+                                // todo : show error message
+                                CustomDialog.showMessage(
+                                    state.errorMessage ?? 'error');
+                              }
                             },
-                            label: 'sign up',
+                            child: DefaultElevatedButton(
+                              onPressed: () {
+                                authViewModel.register();
+                              },
+                              label: 'sign up',
+                            ),
                           ),
                           SizedBox(height: 68.h),
                         ],
@@ -146,9 +183,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
-  }
-
-  void _signup() {
-    if (_formKey.currentState!.validate()) {}
   }
 }
