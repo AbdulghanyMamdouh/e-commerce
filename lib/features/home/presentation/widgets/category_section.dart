@@ -27,8 +27,12 @@ class CategorySection extends StatelessWidget {
               return GridView.builder(
                   itemCount: state.categories.length,
                   scrollDirection: Axis.horizontal,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
+                    mainAxisSpacing: 16.w,
+                    crossAxisSpacing: 16.h,
+                    mainAxisExtent: 100.h,
+                    childAspectRatio: 100 / 144,
                   ),
                   itemBuilder: (_, index) {
                     return CustomCategoryItem(

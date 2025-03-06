@@ -26,6 +26,9 @@ class HomeTab extends StatelessWidget {
               title: 'Brand',
             ),
             BrandSection(),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),
