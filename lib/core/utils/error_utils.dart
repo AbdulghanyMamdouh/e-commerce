@@ -11,7 +11,7 @@ class ErrorUtils extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 100),
+          const Icon(Icons.error_outline, size: 100),
           SizedBox(
             height: 30.h,
           ),
@@ -20,7 +20,7 @@ class ErrorUtils extends StatelessWidget {
                something went wrong''',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          Text(
+          const Text(
             'Please try again later',
             style: TextStyle(fontSize: 18),
           ),

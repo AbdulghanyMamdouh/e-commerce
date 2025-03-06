@@ -7,6 +7,7 @@ import 'package:shopping_app/features/auth/data/models/request/login_request.dar
 import 'package:shopping_app/features/auth/data/models/request/register_request.dart';
 import 'package:shopping_app/features/auth/data/models/response/login/login_response_dto.dart';
 import 'package:shopping_app/features/auth/data/models/response/register/register_response_dto.dart';
+import 'package:shopping_app/core/di/di.dart';
 
 class AuthApiManager {
   AuthApiManager._();
@@ -16,13 +17,6 @@ class AuthApiManager {
     _instance ??= AuthApiManager._();
     return _instance!;
   }
-
-  final _dio = Dio(
-    BaseOptions(
-      baseUrl: ApiConstatnt.baseUrl,
-      receiveDataWhenStatusError: true,
-    ),
-  );
 
   Future<Either<Failures, RegisterResponseDTO>> register(
       String? name, String? email, String? password, String? phoneNo) async {
@@ -40,7 +34,7 @@ class AuthApiManager {
           password: password,
           phone: phoneNo,
         );
-        final response = await _dio.post(
+        final response = await dio.post(
           ApiConstatnt.register,
           data: registerRequest.toJson(),
         );
@@ -84,7 +78,7 @@ class AuthApiManager {
           password: password,
         );
 
-        final response = await _dio.post(
+        final response = await dio.post(
           ApiConstatnt.login,
           data: loginRequest.toJson(),
         );
@@ -113,39 +107,4 @@ class AuthApiManager {
           NetworkError(errorMessage: 'Check your internet connection!'));
     }
   }
-
-  // Future<Either<Failures, LoginResponseDTO>> login(
-  //     String? email, String? password) async {
-  //   var connectivityResults = await Connectivity().checkConnectivity();
-  //   if (connectivityResults.contains(ConnectivityResult.mobile) ||
-  //       connectivityResults.contains(ConnectivityResult.wifi)) {
-  //     // connected to network
-  //     var loginRequest = LoginRequest(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     final response = await _dio.post(
-  //       ApiConstatnt.login,
-  //       data: loginRequest.toJson(),
-  //     );
-  //     final loginResponse = LoginResponseDTO.fromJson(response.data);
-  //     if (response.statusCode! >= 200 && response.statusCode! < 300) {
-  //       // success
-  //       return Right(loginResponse);
-  //     } else {
-  //       // failure from server
-  //       return Left(
-  //         ServerError(
-  //             errorMessage: loginResponse.message ??= "can't fetch data!."),
-  //       );
-  //     }
-  //   } else {
-  //     // not connected to network
-  //     return Left(
-  //       NetworkError(
-  //         errorMessage: 'check your internet connection!.',
-  //       ),
-  //     );
-  //   }
-  // }
 }
