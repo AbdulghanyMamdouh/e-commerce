@@ -18,7 +18,7 @@ class EcommerceApp extends StatelessWidget {
         title: 'For you',
         theme: ThemeManager.mainTheme,
         routes: {
-          HomeScreen.routeName: (_) => const HomeScreen(),
+          HomeScreen.routeName: (_) => HomeScreen(),
           LoginScreen.routeName: (_) => const LoginScreen(),
           RegisterScreen.routeName: (_) => const RegisterScreen(),
         },

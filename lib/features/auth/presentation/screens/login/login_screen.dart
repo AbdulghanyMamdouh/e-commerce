@@ -120,10 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             bloc: authViewModel,
                             listener: (context, state) {
                               if (state is LoginStateLoading) {
-                                //TODO: show loading
+                                //todo: show loading
                                 CustomDialog.showLoading(context);
                               } else if (state is LoginStateSuccess) {
-                                //TODO: hide loading
+                                //todo: hide loading
                                 //navigate to home
                                 CustomDialog.hideLoading(context);
                                 //todo: save token

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class DefaultTextButton extends StatelessWidget {
   const DefaultTextButton({
-    Key? key,
+   super. key,
     required this.onPressed,
     required this.label,
-  }) : super(key: key);
+  }) ;
   final void Function()? onPressed;
   final String label;
   @override
