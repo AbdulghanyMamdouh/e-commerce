@@ -17,8 +17,7 @@ HomeUseCases injectHomeUseCase() {
 }
 
 HomeRepositoryContract injectHomeRepositoryContract() {
-  return HomeRepositoryImpl(
-      dataSourceImpl: injectHomeApiRemoteDataSourceImpl());
+  return HomeRepositoryImpl(dataSource: injectHomeApiRemoteDataSourceImpl());
 }
 
 HomeApiRemoteDataSourceImpl injectHomeApiRemoteDataSourceImpl() {

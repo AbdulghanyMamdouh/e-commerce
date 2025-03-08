@@ -25,7 +25,7 @@ class BrandSection extends StatelessWidget {
               return const LoadingIndicator();
             } else if (state is GetBrandSuccessState) {
               return GridView.builder(
-                  itemCount: 10,
+                  itemCount: state.brands.length,
                   scrollDirection: Axis.horizontal,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
