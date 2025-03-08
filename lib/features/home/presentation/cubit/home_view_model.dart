@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shopping_app/features/category/presentation/screen/category_tab.dart';
+import 'package:shopping_app/features/product/presentation/screen/product_tab.dart';
 import 'package:shopping_app/features/favorite/presentation/screen/favorite_tab.dart';
 import 'package:shopping_app/features/home/domain/use_case/home_use_cases.dart';
 import 'package:shopping_app/features/home/presentation/cubit/home_states.dart';
@@ -14,7 +14,7 @@ class HomeViewModel extends Cubit<HomeStates> {
   }) : super(HomeInitialState());
   List<Widget> tabs = [
     const HomeTab(),
-    const CategoryTab(),
+    const ProductTab(),
     const FavoriteTab(),
     const ProfileTab(),
   ];
