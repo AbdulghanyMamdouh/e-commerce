@@ -4,4 +4,5 @@ class ApiConstatnt {
   static const String register = 'auth/signup';
   static const String getAllCategory = 'categories';
   static const String gatAllBrands = 'brands';
+  static const String getAllProducts = 'products';
 }

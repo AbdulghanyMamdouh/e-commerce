@@ -18,24 +18,27 @@ class CustomCategoryItem extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 50.r,
-          child: CachedNetworkImage(
-            imageUrl: category.imageURL ?? "http://via.placeholder.com/350x150",
-            placeholder: (context, url) => const LoadingIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                width: 100.w,
-                height: 100.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.fill,
-                  ),
+          child: category.name == "Women's Fashion"
+              ? Image.asset('assets/images/wf.png')
+              : CachedNetworkImage(
+                  imageUrl:
+                      category.imageURL ?? "http://via.placeholder.com/350x150",
+                  placeholder: (context, url) => const LoadingIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      width: 100.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ),
         SizedBox(
           height: 8.h,

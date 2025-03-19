@@ -13,12 +13,7 @@ class HomeApiRemoteDataSourceImpl implements HomeRemoteDataSourceContract {
   });
   @override
   Future<Either<Failures, BrandResponse>> getAllBrands() async {
-    final either = await apiManager.getAllBrands();
-    return either.fold((le) {
-      return Left(le);
-    }, (response) {
-      return Right(response);
-    });
+    return await HomeTabApiManager.getInstance().getAllBrands();
   }
 
   @override
