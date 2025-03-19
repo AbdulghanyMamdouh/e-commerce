@@ -38,7 +38,7 @@ class BrandSection extends StatelessWidget {
                     return CustomBrandItem(brand: state.brands[index]);
                   });
             } else if (state is GetBrandErrorState) {
-              return Text('Error: ${state.errorMessage}');
+              return Text(state.errorMessage);
             } else {
               return const Text('no data available');
             }

@@ -39,7 +39,7 @@ class CategorySection extends StatelessWidget {
                         category: state.categories[index]);
                   });
             } else if (state is GetCategoryErrorState) {
-              return Text('Error: ${state.errorMessage}');
+              return Text(state.errorMessage);
             } else {
               return const Text('no data available');
             }

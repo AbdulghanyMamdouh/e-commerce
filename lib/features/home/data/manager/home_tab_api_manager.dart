@@ -33,8 +33,9 @@ class HomeTabApiManager {
         }
       } on DioException catch (e) {
         return Left(ServerError(
-            errorMessage:
-                e.response!.data['message'] ?? 'unknown error message'));
+            errorMessage: e.response == null
+                ? 'No internet connection available...'
+                : e.response!.data['message'] ?? 'unknown error message'));
       }
     } else {
       return Left(
@@ -61,8 +62,9 @@ class HomeTabApiManager {
         }
       } on DioException catch (e) {
         return Left(ServerError(
-            errorMessage:
-                e.response!.data['message'] ?? 'unknown error message'));
+            errorMessage: e.response == null
+                ? 'No internet connection available...'
+                : e.response!.data['message'] ?? 'unknown error message'));
       }
     } else {
       return Left(
