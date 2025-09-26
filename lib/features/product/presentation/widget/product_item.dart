@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:read_more_text/read_more_text.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
 import 'package:shopping_app/core/utils/error_utils.dart';
 import 'package:shopping_app/core/utils/loading_indicator.dart';
-
 import 'package:shopping_app/features/product/domain/entity/product_entity.dart';
 
 class ProductItem extends StatelessWidget {

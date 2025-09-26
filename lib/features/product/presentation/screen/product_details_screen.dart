@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +12,8 @@ class ProductDetailsScreen extends StatelessWidget {
   static const String routeName = 'product_screen';
   final formatter = NumberFormat.compact(locale: 'en')
     ..maximumFractionDigits = 1;
+
+  ProductDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as ProductEntity;
@@ -181,7 +182,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(
                     width: 14.w,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.star,
                     color: ColorManager.yellow,
                     size: 34,
@@ -209,10 +210,8 @@ class ProductDetailsScreen extends StatelessWidget {
                         IconButton(
                           iconSize: 28.sp,
                           color: ColorManager.white,
-                          onPressed: () {
-                            print(product.sold);
-                          },
-                          icon: Icon(Icons.remove_circle_outline),
+                          onPressed: () {},
+                          icon: const Icon(Icons.remove_circle_outline),
                         ),
                         SizedBox(
                           width: 10.w,
@@ -233,7 +232,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           iconSize: 28.sp,
                           color: ColorManager.white,
                           onPressed: () {},
-                          icon: Icon(Icons.add_circle_outline),
+                          icon: const Icon(Icons.add_circle_outline),
                         ),
                       ],
                     ),
