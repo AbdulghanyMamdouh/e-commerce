@@ -4,6 +4,8 @@ abstract class ProductStates {}
 
 class ProductInitialState extends ProductStates {}
 
+class ProductLoadingState extends ProductStates {}
+
 class ProductErrorState extends ProductStates {
   // Handle errors here
   String errorMessage;

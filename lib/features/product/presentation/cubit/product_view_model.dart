@@ -7,7 +7,7 @@ class ProductViewModel extends Cubit<ProductStates> {
       : super(ProductInitialState());
   GetAllProductsUseCase getAllProductsUseCase;
   Future<void> getAllProducts() async {
-    emit(ProductInitialState());
+    emit(ProductLoadingState());
     final either = await getAllProductsUseCase.getAllProducts();
     either.fold(
       (err) {

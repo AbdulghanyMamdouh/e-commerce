@@ -4,6 +4,7 @@ import 'package:shopping_app/features/auth/presentation/screens/login/login_scre
 import 'package:shopping_app/features/auth/presentation/screens/register/register_screen.dart';
 import 'package:shopping_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopping_app/features/product/presentation/screen/product_details_screen.dart';
 
 class EcommerceApp extends StatelessWidget {
   const EcommerceApp({super.key, required this.initialRoute});
@@ -19,8 +20,9 @@ class EcommerceApp extends StatelessWidget {
         theme: ThemeManager.mainTheme,
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
-          LoginScreen.routeName: (_) => const LoginScreen(),
+          LoginScreen.routeName: (_) => LoginScreen(),
           RegisterScreen.routeName: (_) => const RegisterScreen(),
+          ProductDetailsScreen.routeName: (_) => ProductDetailsScreen(),
         },
         initialRoute: initialRoute,
       ),

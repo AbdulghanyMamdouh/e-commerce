@@ -13,16 +13,12 @@ import 'package:shopping_app/features/auth/presentation/widgets/default_elevated
 import 'package:shopping_app/features/auth/presentation/widgets/default_text_button.dart';
 import 'package:shopping_app/features/home/presentation/screens/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   static const String routeName = 'loginScreen';
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  AuthViewModel authViewModel = AuthViewModel(authUseCase: injectUseCase());
+  final AuthViewModel authViewModel =
+      AuthViewModel(authUseCase: injectUseCase());
 
   @override
   Widget build(BuildContext context) {

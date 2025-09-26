@@ -47,6 +47,9 @@ dependencies:
   shared_preferences: ^2.5.2
   flutter_image_slideshow: ^0.1.6
   cached_network_image: ^3.4.1
+  read_more_text: ^0.0.5
+  carousel_slider: ^5.1.1
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

@@ -19,8 +19,10 @@ class ProductDTO extends ProductEntity {
   });
 
   factory ProductDTO.fromJson(Map<String, dynamic> json) => ProductDTO(
-        sold: json['sold'] as int?,
-        images: json['images'] as List<String>?,
+        sold: (json['sold'] as num?)?.toInt(),
+        images: (json['images'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList(),
         ratingsQuantity: json['ratingsQuantity'] as int?,
         id: json['_id'] as String?,
         title: json['title'] as String?,
