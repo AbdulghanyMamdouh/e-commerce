@@ -5,4 +5,5 @@ class ApiConstatnt {
   static const String getAllCategory = 'categories';
   static const String gatAllBrands = 'brands';
   static const String getAllProducts = 'products';
+  static const String cart = 'cart';
 }
