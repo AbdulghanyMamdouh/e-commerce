@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
+import 'package:shopping_app/core/utils/custom_dialog.dart';
+import 'package:shopping_app/core/utils/shared_preference_utils.dart';
 import 'package:shopping_app/core/widgets/default_button_cart_product_screen.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_states.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
 import 'package:shopping_app/features/product/domain/entity/product_entity.dart';
 import 'package:read_more_text/read_more_text.dart';
 
@@ -12,7 +18,7 @@ class ProductDetailsScreen extends StatelessWidget {
   static const String routeName = 'product_screen';
   final formatter = NumberFormat.compact(locale: 'en')
     ..maximumFractionDigits = 1;
-
+  CartViewModel viewModel = CartViewModel(cartUseCase: injectCartUseCase());
   ProductDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
@@ -293,11 +299,36 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(
                     width: 30.w,
                   ),
-                  DefaultButtonCartProductScreen(
-                    icon: const Icon(Icons.add_shopping_cart),
-                    iconAlignment: IconAlignment.start,
-                    onPressed: () {},
-                    label: 'Add to cart',
+                  BlocListener<CartViewModel, CartStates>(
+                    bloc: viewModel,
+                    listener: (context, state) async {
+                      if (state is AddToCartLoadingState) {
+                        CustomDialog.showLoading(context);
+                      }
+                      if (state is AddToCartSuccessState) {
+                        CustomDialog.hideLoading(context);
+
+                        // todo : show message
+                        CustomDialog.showMessage(
+                          state.message,
+                        );
+                      } else if (state is AddToCartErrorState) {
+                        CustomDialog.hideLoading(context);
+                        print(state.errMsg);
+                        // todo : show message
+                        CustomDialog.showMessage(
+                          state.errMsg,
+                        );
+                      }
+                    },
+                    child: DefaultButtonCartProductScreen(
+                      icon: const Icon(Icons.add_shopping_cart),
+                      iconAlignment: IconAlignment.start,
+                      onPressed: () {
+                        viewModel.addToCart(productId: product.id!);
+                      },
+                      label: 'Add to cart',
+                    ),
                   ),
                 ],
               )

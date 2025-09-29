@@ -20,7 +20,8 @@ class CartRemoteApiDataSourceImpl extends CartRemoteDataSourceContract {
   }
 
   @override
-  Future<Either<Failures, String>> removeFromCart(String productId) async {
+  Future<Either<Failures, CartResponseEntity>> removeFromCart(
+      String productId) async {
     return await cartApiManager.removeFromCart(productId);
   }
 

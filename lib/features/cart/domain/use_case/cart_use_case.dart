@@ -4,23 +4,25 @@ import 'package:shopping_app/features/cart/domain/entity/cart_response_entity.da
 import 'package:shopping_app/features/cart/domain/repository/repo/cart_repository_contract.dart';
 
 class CartUseCase {
-  CartRepositoryContract cartRepository;
-  CartUseCase({required this.cartRepository});
+  CartRepositoryContract cartRepositoryContract;
+  CartUseCase({required this.cartRepositoryContract});
 
   Future<Either<Failures, CartResponseEntity>> getUserCart() async {
-    return await cartRepository.getCart();
+    return await cartRepositoryContract.getCart();
   }
 
   Future<Either<Failures, CartResponseEntity>> updateCart(
       {required String productId, required int count}) async {
-    return await cartRepository.updateCart(productId: productId, count: count);
+    return await cartRepositoryContract.updateCart(
+        productId: productId, count: count);
   }
 
-  Future<Either<Failures, String>> removeFromCart(String productId) async {
-    return await cartRepository.removeFromCart(productId);
+  Future<Either<Failures, CartResponseEntity>> removeFromCart(
+      String productId) async {
+    return await cartRepositoryContract.removeFromCart(productId);
   }
 
   Future<Either<Failures, String>> addToCart(String productId) async {
-    return await cartRepository.addToCart(productId);
+    return await cartRepositoryContract.addToCart(productId);
   }
 }

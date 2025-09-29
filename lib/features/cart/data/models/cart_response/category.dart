@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Category {
   String? id;
   String? name;
@@ -14,23 +12,4 @@ class Category {
         slug: data['slug'] as String?,
         image: data['image'] as String?,
       );
-
-  Map<String, dynamic> toMap() => {
-        '_id': id,
-        'name': name,
-        'slug': slug,
-        'image': image,
-      };
-
-  /// `dart:convert`
-  ///
-  /// Parses the string and returns the resulting Json object as [Category].
-  factory Category.fromJson(String data) {
-    return Category.fromMap(json.decode(data) as Map<String, dynamic>);
-  }
-
-  /// `dart:convert`
-  ///
-  /// Converts [Category] to a JSON string.
-  String toJson() => json.encode(toMap());
 }

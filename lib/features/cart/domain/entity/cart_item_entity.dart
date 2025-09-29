@@ -3,13 +3,13 @@ import 'package:shopping_app/features/cart/data/models/cart_response/product_car
 class CartItemEntity {
   String id;
 
-  List<ProductCartDTO> products;
+  List<ProductCartDTO> product;
 
   int totalCartPrice;
 
   CartItemEntity({
     required this.id,
-    required this.products,
+    required this.product,
     required this.totalCartPrice,
   });
 }

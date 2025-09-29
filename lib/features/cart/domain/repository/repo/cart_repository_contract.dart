@@ -7,6 +7,6 @@ abstract class CartRepositoryContract {
 
   Future<Either<Failures, CartResponseEntity>> updateCart(
       {required String productId, required int count});
-  Future<Either<Failures, String>> removeFromCart(String productId);
+  Future<Either<Failures, CartResponseEntity>> removeFromCart(String productId);
   Future<Either<Failures, String>> addToCart(String productId);
 }

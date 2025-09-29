@@ -7,6 +7,12 @@ import 'package:shopping_app/features/auth/data/repository/repository/auth_repos
 import 'package:shopping_app/features/auth/domain/repository/data_source/auth_remote_data_source_contract.dart';
 import 'package:shopping_app/features/auth/domain/repository/repository/auth_repository_contract.dart';
 import 'package:shopping_app/features/auth/domain/usecase/auth_use_case.dart';
+import 'package:shopping_app/features/cart/data/manager/cart_api_manager.dart';
+import 'package:shopping_app/features/cart/data/repository/data_source/cart_remote_api_data_source_impl.dart';
+import 'package:shopping_app/features/cart/data/repository/data_source/cart_remote_data_source_contract.dart';
+import 'package:shopping_app/features/cart/data/repository/repo/cart_repository_impl.dart';
+import 'package:shopping_app/features/cart/domain/repository/repo/cart_repository_contract.dart';
+import 'package:shopping_app/features/cart/domain/use_case/cart_use_case.dart';
 import 'package:shopping_app/features/home/data/manager/home_tab_api_manager.dart';
 import 'package:shopping_app/features/home/data/repository/data_source/home_api_remote_data_source_impl.dart';
 import 'package:shopping_app/features/home/data/repository/data_source/home_remote_data_source_contract.dart';
@@ -19,6 +25,19 @@ import 'package:shopping_app/features/product/data/repository/data_source/produc
 import 'package:shopping_app/features/product/data/repository/repository/product_repository_impl.dart';
 import 'package:shopping_app/features/product/domain/repository/product_repository_contruct.dart';
 import 'package:shopping_app/features/product/domain/use_cases/get_all_products_use_case.dart';
+
+CartUseCase injectCartUseCase() {
+  return CartUseCase(cartRepositoryContract: injectCartRepositoryContract());
+}
+
+CartRepositoryContract injectCartRepositoryContract() {
+  return CartRepositoryImpl(remoteDataSource: injectCartRemoteDataSource());
+}
+
+CartRemoteDataSourceContract injectCartRemoteDataSource() {
+  return CartRemoteApiDataSourceImpl(
+      cartApiManager: CartApiManager.getInstance());
+}
 
 GetAllProductsUseCase injectGetAllProductsUseCase() {
   return GetAllProductsUseCase(

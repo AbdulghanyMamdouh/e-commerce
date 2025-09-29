@@ -1,11 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
+import 'package:shopping_app/features/cart/domain/entity/cart_response_entity.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
 
 class ProductCartItem extends StatelessWidget {
-  const ProductCartItem({super.key});
-
+  ProductCartItem({super.key, required this.cartData, required this.index});
+  final CartViewModel viewModel =
+      CartViewModel(cartUseCase: injectCartUseCase());
+  CartResponseEntity? cartData;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +28,7 @@ class ProductCartItem extends StatelessWidget {
               Radius.circular(15.r),
             ),
             child: CachedNetworkImage(
-              imageUrl:
+              imageUrl: cartData?.data?.product[index].coverImageURL ??
                   'https://ecommerce.routemisr.com/Route-Academy-products/1680399913757-cover.jpeg',
               height: double.infinity,
               width: 120.w,
@@ -32,26 +38,31 @@ class ProductCartItem extends StatelessWidget {
           SizedBox(
             width: 8.w,
           ),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'product title\n\n',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.primary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18.sp,
-                      ),
-                ),
-                TextSpan(
-                  text: 'product price',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.primary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18.sp,
-                      ),
-                ),
-              ],
+          SizedBox(
+            width: 140.w,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${cartData?.data?.product[index].title}\n\n',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: ColorManager.primary,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18.sp,
+                          height: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                  ),
+                  TextSpan(
+                    text: 'EGP ${cartData?.data?.product[index].price}',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: ColorManager.primary,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18.sp,
+                        ),
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -62,7 +73,10 @@ class ProductCartItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        viewModel.removeFromCart(
+                            productId: cartData?.data?.product[index].id ?? '');
+                      },
                       icon: Icon(
                         Icons.delete_outline,
                         size: 28.sp,
@@ -84,11 +98,12 @@ class ProductCartItem extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.remove_circle_outline),
                         ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
+                        // SizedBox(
+                        //   width: 8.w,
+                        // ),
                         Text(
-                          '1',
+                          cartData?.data?.product[index].count.toString() ??
+                              '1',
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
                                     fontSize: 20.sp,
@@ -97,7 +112,7 @@ class ProductCartItem extends StatelessWidget {
                                   ),
                         ),
                         SizedBox(
-                          width: 8.w,
+                          width: 5.w,
                         ),
                         IconButton(
                           iconSize: 28.sp,

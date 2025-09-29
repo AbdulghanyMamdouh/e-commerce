@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:shopping_app/core/constants/api_constatnt.dart';
 import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/utils/failure.dart';
@@ -13,7 +16,8 @@ class CartApiManager {
     return _instance!;
   }
 
-  Future<Either<Failures, String>> removeFromCart(String productId) async {
+  Future<Either<Failures, CartResponseDTO>> removeFromCart(
+      String productId) async {
     var connectivity = await Connectivity().checkConnectivity();
     if (connectivity.contains(ConnectivityResult.mobile) ||
         connectivity.contains(ConnectivityResult.wifi)) {
@@ -22,9 +26,8 @@ class CartApiManager {
           '${ApiConstatnt.cart}/$productId',
         );
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
-          return const Right(
-            'Product removed successfully from your cart',
-          );
+          final cartResponse = CartResponseDTO.fromMap(response.data);
+          return Right(cartResponse);
         } else if (response.statusCode == 401) {
           return Left(Failures(
               errorMessage: response.data['message'] ??
@@ -57,10 +60,10 @@ class CartApiManager {
             "productId": productId,
           },
         );
+
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
-          final cartResponse = CartResponseDTO.fromMap(response.data);
           return Right(
-            cartResponse.message ?? 'Product added successfully to your cart',
+            response.data['message'],
           );
         } else if (response.statusCode == 401) {
           return Left(Failures(
@@ -93,8 +96,9 @@ class CartApiManager {
           '${ApiConstatnt.cart}/$productId',
           data: {"count": count},
         );
+        final cartResponse = CartResponseDTO.fromMap(response.data);
+
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
-          final cartResponse = CartResponseDTO.fromMap(response.data);
           return Right(cartResponse);
         } else if (response.statusCode == 401) {
           return Left(Failures(
@@ -124,6 +128,9 @@ class CartApiManager {
       try {
         final response = await dio.get(ApiConstatnt.cart);
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
+          if (response.data['data']["products"].toString() == '[]') {
+            return Left(Failures(errorMessage: 'Your Cart Is Empty.!'));
+          }
           final cartResponse = CartResponseDTO.fromMap(response.data);
           return Right(cartResponse);
         } else if (response.statusCode == 401) {
@@ -133,12 +140,12 @@ class CartApiManager {
                   'Invalid Token. please login again'));
         } else {
           return Left(Failures(
-              errorMessage: response.data['message'] ??
+              errorMessage: response.data['status'] ??
                   response.statusMessage ??
                   'Server Error'));
         }
-      } catch (e) {
-        return Left(Failures(errorMessage: e.toString()));
+      } catch (exception) {
+        return Left(ServerError(errorMessage: exception.toString()));
       }
     } else {
       return Left(

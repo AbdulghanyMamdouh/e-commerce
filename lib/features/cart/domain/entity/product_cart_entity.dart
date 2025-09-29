@@ -1,19 +1,19 @@
 class ProductCartEntity {
   int? count;
   String? id;
-  ProductCartEntity? product;
+  ProductCartEntity? products;
   int? price;
+  final String title;
+  final String coverImageURL;
+  final double ratingsAverage;
 
-  ProductCartEntity({this.count, this.id, this.product, this.price});
-
-  factory ProductCartEntity.fromMap(Map<String, dynamic> data) =>
-      ProductCartEntity(
-        count: data['count'] as int?,
-        id: data['_id'] as String?,
-        product: data['product'] == null
-            ? null
-            : ProductCartEntity.fromMap(
-                data['product'] as Map<String, dynamic>),
-        price: data['price'] as int?,
-      );
+  ProductCartEntity({
+    this.count,
+    this.id,
+    this.products,
+    this.price,
+    required this.title,
+    required this.coverImageURL,
+    required this.ratingsAverage,
+  });
 }

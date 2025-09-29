@@ -2,8 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:shopping_app/core/utils/failure.dart';
 import 'package:shopping_app/features/cart/data/repository/data_source/cart_remote_data_source_contract.dart';
 import 'package:shopping_app/features/cart/domain/entity/cart_response_entity.dart';
+import 'package:shopping_app/features/cart/domain/repository/repo/cart_repository_contract.dart';
 
-class CartRepositoryImpl extends CartRemoteDataSourceContract {
+class CartRepositoryImpl extends CartRepositoryContract {
   final CartRemoteDataSourceContract remoteDataSource;
   CartRepositoryImpl({required this.remoteDataSource});
   @override
@@ -17,7 +18,8 @@ class CartRepositoryImpl extends CartRemoteDataSourceContract {
   }
 
   @override
-  Future<Either<Failures, String>> removeFromCart(String productId) async {
+  Future<Either<Failures, CartResponseEntity>> removeFromCart(
+      String productId) async {
     return await remoteDataSource.removeFromCart(productId);
   }
 
