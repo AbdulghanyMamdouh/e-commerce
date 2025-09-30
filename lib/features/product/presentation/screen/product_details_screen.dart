@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
 import 'package:shopping_app/core/utils/custom_dialog.dart';
-import 'package:shopping_app/core/utils/shared_preference_utils.dart';
 import 'package:shopping_app/core/widgets/default_button_cart_product_screen.dart';
 import 'package:shopping_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
@@ -18,7 +17,8 @@ class ProductDetailsScreen extends StatelessWidget {
   static const String routeName = 'product_screen';
   final formatter = NumberFormat.compact(locale: 'en')
     ..maximumFractionDigits = 1;
-  CartViewModel viewModel = CartViewModel(cartUseCase: injectCartUseCase());
+  final CartViewModel viewModel =
+      CartViewModel(cartUseCase: injectCartUseCase());
   ProductDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
@@ -314,7 +314,6 @@ class ProductDetailsScreen extends StatelessWidget {
                         );
                       } else if (state is AddToCartErrorState) {
                         CustomDialog.hideLoading(context);
-                        print(state.errMsg);
                         // todo : show message
                         CustomDialog.showMessage(
                           state.errMsg,

@@ -8,14 +8,13 @@ class CartViewModel extends Cubit<CartStates> {
     required this.cartUseCase,
   }) : super(CartInitialState());
 
-  // CartResponseEntity? cartData;
+  CartResponseEntity? cartData;
   final CartUseCase cartUseCase;
 
   Future<void> addToCart({required String productId}) async {
     emit(AddToCartLoadingState());
     final either = await cartUseCase.addToCart(productId);
     either.fold((failure) {
-      print("failure.errorMessage: ${failure.errorMessage}");
       emit(AddToCartErrorState(
           errMsg:
               failure.errorMessage ?? 'Failed to add your product to cart'));
@@ -34,14 +33,13 @@ class CartViewModel extends Cubit<CartStates> {
                 'Failed to remove your product from cart'),
       );
     }, (newCart) {
-      // cartData = newCart;
+      cartData = newCart;
       // emit(GetCartSuccessState(cartData: cartData!));
       emit(
         RemoveFromCartSuccessState(
           message: 'Product removed from cart successfully',
         ),
       );
-      getUserCart();
     });
   }
 
@@ -56,11 +54,10 @@ class CartViewModel extends Cubit<CartStates> {
             errMsg: failure.errorMessage ?? 'Failed to update your cart'),
       );
     }, (newCart) {
-      // cartData = newCart;
+      cartData = newCart;
       emit(
         UpdateCartSuccessState(message: 'Cart updated successfully'),
       );
-      emit(GetCartSuccessState(cartData: newCart));
     });
   }
 
@@ -71,6 +68,7 @@ class CartViewModel extends Cubit<CartStates> {
       emit(GetCartErrorState(
           failure.errorMessage ?? 'Failed to load your cart'));
     }, (cartResponse) {
+      cartData = cartResponse;
       emit(GetCartSuccessState(cartData: cartResponse));
     });
   }

@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+
 import 'package:shopping_app/core/constants/api_constatnt.dart';
 import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/utils/failure.dart';

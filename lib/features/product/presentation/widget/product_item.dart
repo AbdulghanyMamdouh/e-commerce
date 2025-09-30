@@ -1,16 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
+import 'package:shopping_app/core/utils/custom_dialog.dart';
 import 'package:shopping_app/core/utils/error_utils.dart';
 import 'package:shopping_app/core/utils/loading_indicator.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_states.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
 import 'package:shopping_app/features/product/domain/entity/product_entity.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({
+  ProductItem({
     super.key,
     required this.product,
   });
+  final CartViewModel viewModel =
+      CartViewModel(cartUseCase: injectCartUseCase());
+
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {
@@ -116,11 +124,38 @@ class ProductItem extends StatelessWidget {
               SizedBox(
                 width: 30.w,
               ),
-              Icon(
-                //todo: change to add icon to the cart
-                Icons.add_circle_outline_sharp,
-                color: ColorManager.primary,
-                size: 27.w,
+              BlocListener<CartViewModel, CartStates>(
+                bloc: viewModel,
+                listener: (context, state) async {
+                  if (state is AddToCartLoadingState) {
+                    CustomDialog.showLoading(context);
+                  }
+                  if (state is AddToCartSuccessState) {
+                    CustomDialog.hideLoading(context);
+
+                    // todo : show message
+                    CustomDialog.showMessage(
+                      state.message,
+                    );
+                  } else if (state is AddToCartErrorState) {
+                    CustomDialog.hideLoading(context);
+                    // todo : show message
+                    CustomDialog.showMessage(
+                      state.errMsg,
+                    );
+                  }
+                },
+                child: InkWell(
+                  onTap: () {
+                    viewModel.addToCart(productId: product.id ?? '');
+                  },
+                  child: Icon(
+                    //todo: change to add icon to the cart
+                    Icons.add_circle_outline_sharp,
+                    color: ColorManager.primary,
+                    size: 27.w,
+                  ),
+                ),
               ),
             ],
           ),
