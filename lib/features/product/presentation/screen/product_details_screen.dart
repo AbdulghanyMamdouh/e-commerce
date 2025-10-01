@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:shopping_app/core/di/di.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
+import 'package:shopping_app/core/utils/custom_dialog.dart';
 import 'package:shopping_app/core/widgets/default_button_cart_product_screen.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_states.dart';
+import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
 import 'package:shopping_app/features/product/domain/entity/product_entity.dart';
 import 'package:read_more_text/read_more_text.dart';
 
@@ -13,12 +17,33 @@ class ProductDetailsScreen extends StatelessWidget {
   static const String routeName = 'product_screen';
   final formatter = NumberFormat.compact(locale: 'en')
     ..maximumFractionDigits = 1;
+  final CartViewModel viewModel =
+      CartViewModel(cartUseCase: injectCartUseCase());
+  ProductDetailsScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as ProductEntity;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Details'),
+        title: const Text(
+          'Product Details',
+          style: TextStyle(
+            color: ColorManager.primary,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'cart');
+            },
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+              color: ColorManager.primary,
+              size: 35.sp,
+              weight: 1.w,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -181,7 +206,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(
                     width: 14.w,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.star,
                     color: ColorManager.yellow,
                     size: 34,
@@ -209,10 +234,8 @@ class ProductDetailsScreen extends StatelessWidget {
                         IconButton(
                           iconSize: 28.sp,
                           color: ColorManager.white,
-                          onPressed: () {
-                            print(product.sold);
-                          },
-                          icon: Icon(Icons.remove_circle_outline),
+                          onPressed: () {},
+                          icon: const Icon(Icons.remove_circle_outline),
                         ),
                         SizedBox(
                           width: 10.w,
@@ -233,7 +256,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           iconSize: 28.sp,
                           color: ColorManager.white,
                           onPressed: () {},
-                          icon: Icon(Icons.add_circle_outline),
+                          icon: const Icon(Icons.add_circle_outline),
                         ),
                       ],
                     ),
@@ -262,48 +285,75 @@ class ProductDetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
               ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Row(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Total price\n',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontSize: 20.sp,
-                                    color: ColorManager.textColor,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                        ),
-                        TextSpan(
-                          text: 'EGP ${product.price}',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontSize: 20.sp,
-                                    color: ColorManager.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30.w,
-                  ),
-                  DefaultButtonCartProductScreen(
-                    icon: const Icon(Icons.add_shopping_cart),
-                    iconAlignment: IconAlignment.start,
-                    onPressed: () {},
-                    label: 'Add to cart',
-                  ),
-                ],
-              )
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          bottom: 90.0.h,
+          left: 16.w,
+          right: 16.w,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Total price\n',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 20.sp,
+                          color: ColorManager.textColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                  TextSpan(
+                    text: 'EGP ${product.price}',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 20.sp,
+                          color: ColorManager.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 30.w,
+            ),
+            BlocListener<CartViewModel, CartStates>(
+              bloc: viewModel,
+              listener: (context, state) async {
+                if (state is AddToCartLoadingState) {
+                  CustomDialog.showLoading(context);
+                }
+                if (state is AddToCartSuccessState) {
+                  CustomDialog.hideLoading(context);
+
+                  // todo : show message
+                  CustomDialog.showMessage(
+                    state.message,
+                  );
+                } else if (state is AddToCartErrorState) {
+                  CustomDialog.hideLoading(context);
+                  // todo : show message
+                  CustomDialog.showMessage(
+                    state.errMsg,
+                  );
+                }
+              },
+              child: DefaultButtonCartProductScreen(
+                icon: const Icon(Icons.add_shopping_cart),
+                iconAlignment: IconAlignment.start,
+                onPressed: () {
+                  viewModel.addToCart(productId: product.id!);
+                },
+                label: 'Add to cart',
+              ),
+            ),
+          ],
         ),
       ),
     );

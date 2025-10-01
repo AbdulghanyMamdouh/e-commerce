@@ -11,6 +11,7 @@ void main() async {
   Bloc.observer = AppBlocObserver();
   await SharedPreferenceUtils.init();
   var token = SharedPreferenceUtils.getData(key: 'token');
+
   String? initialRoute;
   if (token == null) {
     initialRoute = LoginScreen.routeName;

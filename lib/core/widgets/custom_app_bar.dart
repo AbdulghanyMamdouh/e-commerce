@@ -35,6 +35,9 @@ class CustomAppBar extends StatelessWidget {
               width: 24.w,
             ),
             InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, 'cart');
+              },
               child: ImageIcon(
                 size: 24.w,
                 const AssetImage('assets/images/cart.png'),
