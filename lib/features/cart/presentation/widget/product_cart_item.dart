@@ -39,39 +39,42 @@ class ProductCartItem extends StatelessWidget {
           SizedBox(
             width: 8.w,
           ),
-          SizedBox(
-            width: 140.w,
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text:
-                        '${viewModel.cartData?.data?.product[index].title}\n\n',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: ColorManager.primary,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18.sp,
-                          height: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                  ),
-                  TextSpan(
-                    text:
-                        'EGP ${viewModel.cartData?.data?.product[index].price}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: ColorManager.primary,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18.sp,
-                        ),
-                  ),
-                ],
-              ),
+          Container(
+            padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
+            width: 130.w,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  maxLines: 3,
+                  '${viewModel.cartData?.data?.product[index].title}\n\n',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: ColorManager.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18.sp,
+                        height: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                ),
+                // SizedBox(
+                //   height: 8.h,
+                // ),
+                Text(
+                  'EGP ${viewModel.cartData?.data?.product[index].price}',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: ColorManager.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18.sp,
+                      ),
+                ),
+              ],
             ),
           ),
           Container(
-            padding: EdgeInsets.all(8.h),
+            padding: EdgeInsets.only(right: 8.h),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 IconButton(
@@ -154,6 +157,7 @@ class ProductCartItem extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: 4.h),
               ],
             ),
           ),

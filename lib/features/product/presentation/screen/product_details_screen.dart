@@ -25,7 +25,25 @@ class ProductDetailsScreen extends StatelessWidget {
     final product = ModalRoute.of(context)!.settings.arguments as ProductEntity;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Details'),
+        title: const Text(
+          'Product Details',
+          style: TextStyle(
+            color: ColorManager.primary,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'cart');
+            },
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+              color: ColorManager.primary,
+              size: 35.sp,
+              weight: 1.w,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -267,72 +285,75 @@ class ProductDetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
               ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Row(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Total price\n',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontSize: 20.sp,
-                                    color: ColorManager.textColor,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                        ),
-                        TextSpan(
-                          text: 'EGP ${product.price}',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    fontSize: 20.sp,
-                                    color: ColorManager.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30.w,
-                  ),
-                  BlocListener<CartViewModel, CartStates>(
-                    bloc: viewModel,
-                    listener: (context, state) async {
-                      if (state is AddToCartLoadingState) {
-                        CustomDialog.showLoading(context);
-                      }
-                      if (state is AddToCartSuccessState) {
-                        CustomDialog.hideLoading(context);
-
-                        // todo : show message
-                        CustomDialog.showMessage(
-                          state.message,
-                        );
-                      } else if (state is AddToCartErrorState) {
-                        CustomDialog.hideLoading(context);
-                        // todo : show message
-                        CustomDialog.showMessage(
-                          state.errMsg,
-                        );
-                      }
-                    },
-                    child: DefaultButtonCartProductScreen(
-                      icon: const Icon(Icons.add_shopping_cart),
-                      iconAlignment: IconAlignment.start,
-                      onPressed: () {
-                        viewModel.addToCart(productId: product.id!);
-                      },
-                      label: 'Add to cart',
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          bottom: 90.0.h,
+          left: 16.w,
+          right: 16.w,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Total price\n',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 20.sp,
+                          color: ColorManager.textColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                  TextSpan(
+                    text: 'EGP ${product.price}',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 20.sp,
+                          color: ColorManager.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 30.w,
+            ),
+            BlocListener<CartViewModel, CartStates>(
+              bloc: viewModel,
+              listener: (context, state) async {
+                if (state is AddToCartLoadingState) {
+                  CustomDialog.showLoading(context);
+                }
+                if (state is AddToCartSuccessState) {
+                  CustomDialog.hideLoading(context);
+
+                  // todo : show message
+                  CustomDialog.showMessage(
+                    state.message,
+                  );
+                } else if (state is AddToCartErrorState) {
+                  CustomDialog.hideLoading(context);
+                  // todo : show message
+                  CustomDialog.showMessage(
+                    state.errMsg,
+                  );
+                }
+              },
+              child: DefaultButtonCartProductScreen(
+                icon: const Icon(Icons.add_shopping_cart),
+                iconAlignment: IconAlignment.start,
+                onPressed: () {
+                  viewModel.addToCart(productId: product.id!);
+                },
+                label: 'Add to cart',
+              ),
+            ),
+          ],
         ),
       ),
     );
