@@ -1,7 +1,7 @@
 class ProductCartEntity {
   int? count;
   String? id;
-  ProductCartEntity? products;
+  // ProductCartEntity? products;
   int? price;
   final String title;
   final String coverImageURL;
@@ -10,7 +10,6 @@ class ProductCartEntity {
   ProductCartEntity({
     this.count,
     this.id,
-    this.products,
     this.price,
     required this.title,
     required this.coverImageURL,

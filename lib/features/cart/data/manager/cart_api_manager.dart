@@ -127,7 +127,7 @@ class CartApiManager {
         final response = await dio.get(ApiConstatnt.cart);
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           if (response.data['data']["products"].toString() == '[]') {
-            return Left(Failures(errorMessage: 'Your Cart Is Empty.!'));
+            return Left(Failures(errorMessage: ''));
           }
           final cartResponse = CartResponseDTO.fromMap(response.data);
           return Right(cartResponse);

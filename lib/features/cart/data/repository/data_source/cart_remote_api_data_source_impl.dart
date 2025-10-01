@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:shopping_app/core/utils/failure.dart';
 import 'package:shopping_app/features/cart/data/manager/cart_api_manager.dart';
-import 'package:shopping_app/features/cart/data/models/cart_response/cart_response_dto.dart';
 import 'package:shopping_app/features/cart/data/repository/data_source/cart_remote_data_source_contract.dart';
 import 'package:shopping_app/features/cart/domain/entity/cart_response_entity.dart';
 
@@ -10,7 +9,7 @@ class CartRemoteApiDataSourceImpl extends CartRemoteDataSourceContract {
   CartRemoteApiDataSourceImpl({required this.cartApiManager});
 
   @override
-  Future<Either<Failures, CartResponseDTO>> getCart() async {
+  Future<Either<Failures, CartResponseEntity>> getCart() async {
     return await cartApiManager.getCart();
   }
 

@@ -59,9 +59,41 @@ class CartScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is GetCartErrorState) {
-            return Center(
-              child: Text(state.error),
-            );
+            if (state.error == '') {
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+
+                children: [
+                  SizedBox(
+                    height: 150.h,
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/wf.png',
+                      height: 350.h,
+                      width: 250.w,
+                      // color: Colors.blue.shade100,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
+                    'Your cart is empty',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: ColorManager.textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.sp,
+                        ),
+                  ),
+                ],
+              );
+            } else {
+              return Center(
+                child: Text(state.error),
+              );
+            }
           }
           {
             if (viewModel.cartData?.data?.product.isEmpty ?? true) {
@@ -95,6 +127,7 @@ class CartScreen extends StatelessWidget {
                 ],
               );
             }
+
             return Container(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -171,51 +204,6 @@ class CartScreen extends StatelessWidget {
             );
           }
         }),
-        // bottomNavigationBar: Padding(
-        //   padding: EdgeInsets.only(
-        //     bottom: 90.0.h,
-        //     left: 16.w,
-        //     right: 16.w,
-        //   ),
-        //   child:
-        //    Row(
-        //     // crossAxisAlignment: CrossAxisAlignment.end,
-        //     children: [
-        //       RichText(
-        //         text: TextSpan(
-        //           children: [
-        //             TextSpan(
-        //               text: 'Total price\n',
-        //               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-        //                     fontSize: 20.sp,
-        //                     color: ColorManager.textColor,
-        //                     fontWeight: FontWeight.w400,
-        //                   ),
-        //             ),
-        //             TextSpan(
-        //               text:
-        //                   'EGP ${viewModel.cartData?.data?.totalCartPrice ?? 0} ',
-        //               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-        //                     fontSize: 20.sp,
-        //                     color: ColorManager.primary,
-        //                     fontWeight: FontWeight.bold,
-        //                   ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       SizedBox(
-        //         width: 30.w,
-        //       ),
-        //       DefaultButtonCartProductScreen(
-        //         icon: const Icon(Icons.arrow_forward),
-        //         iconAlignment: IconAlignment.end,
-        //         onPressed: () {},
-        //         label: 'Check Out',
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
