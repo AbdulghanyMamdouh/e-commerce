@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopping_app/core/theme/color_manager.dart';
 import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
+import 'package:shopping_app/features/favorite/presentation/cubit/favorite_view_model.dart';
 
 class ProductFavoriteItem extends StatelessWidget {
-  const ProductFavoriteItem(
-      {super.key, required this.viewModel, required this.index});
-  final CartViewModel viewModel;
+  const ProductFavoriteItem({
+    super.key,
+    required this.viewModel,
+    required this.index,
+  });
+  final FavoriteViewModel viewModel;
 
-  // final CartResponseEntity? cartData;
   final int index;
   @override
   Widget build(BuildContext context) {
@@ -29,16 +32,16 @@ class ProductFavoriteItem extends StatelessWidget {
             ),
             child: CachedNetworkImage(
               imageUrl: viewModel
-                      .cartData?.data?.product[index].coverImageURL ??
+                      .product?.favoriteProducts?[index].imageCover ??
                   'https://ecommerce.routemisr.com/Route-Academy-products/1680399913757-cover.jpeg',
               height: double.infinity,
               width: 120.w,
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(
-            width: 8.w,
-          ),
+          // SizedBox(
+          //   width: 8.w,
+          // ),
           Container(
             padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
             width: 130.w,
@@ -48,7 +51,8 @@ class ProductFavoriteItem extends StatelessWidget {
               children: [
                 Text(
                   maxLines: 3,
-                  '${viewModel.cartData?.data?.product[index].title}\n\n',
+                  // 'title',
+                  '${viewModel.product.favoriteProducts?[index].title}\n\n',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: ColorManager.primary,
                         fontWeight: FontWeight.w500,
@@ -61,7 +65,8 @@ class ProductFavoriteItem extends StatelessWidget {
                 //   height: 8.h,
                 // ),
                 Text(
-                  'EGP ${viewModel.cartData?.data?.product[index].price}',
+                  // '10',
+                  'EGP ${viewModel.product.favoriteProducts?[index].price}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: ColorManager.primary,
                         fontWeight: FontWeight.w500,
@@ -78,83 +83,38 @@ class ProductFavoriteItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 IconButton(
+                    splashColor: ColorManager.white,
                     onPressed: () {
-                      viewModel.removeFromCart(
-                          productId:
-                              viewModel.cartData?.data?.product[index].id ??
-                                  '');
+                      // viewModel.removeProductFromWishList(
+                      //     productId:
+                      //         viewModel.product?.favoriteProducts?[index].id ??
+                      //             '');
                     },
                     icon: Icon(
-                      Icons.delete_outline,
+                      Icons.favorite,
                       size: 28.sp,
+                      color: ColorManager.primary,
                     )),
                 Container(
-                  // width: 122.w,
-                  // height: 44.h,
+                  // width: 100.w,
+                  // height: 36.h,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8.h,
+                    horizontal: 12.w,
+                  ),
                   decoration: BoxDecoration(
                     color: ColorManager.primary,
                     borderRadius: BorderRadius.all(
                       Radius.circular(30.r),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        iconSize: 28.sp,
-                        color: ColorManager.white,
-                        onPressed: () {
-                          if ((viewModel.cartData?.data?.product[index].count ??
-                                  1) >
-                              1) {
-                            viewModel.updateCart(
-                                productId: viewModel
-                                        .cartData?.data?.product[index].id ??
-                                    '',
-                                count: (viewModel.cartData?.data?.product[index]
-                                            .count ??
-                                        1) -
-                                    1);
-                          } else {
-                            viewModel.removeFromCart(
-                                productId: viewModel
-                                        .cartData?.data?.product[index].id ??
-                                    '');
-                          }
-                        },
-                        icon: const Icon(Icons.remove_circle_outline),
-                      ),
-                      // SizedBox(
-                      //   width: 1.w,
-                      // ),
-                      Text(
-                        viewModel.cartData?.data?.product[index].count
-                                .toString() ??
-                            '1',
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              fontSize: 20.sp,
-                              color: ColorManager.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      // SizedBox(
-                      //   width: 5.w,
-                      // ),
-                      IconButton(
-                        iconSize: 28.sp,
-                        color: ColorManager.white,
-                        onPressed: () {
-                          viewModel.updateCart(
-                              productId:
-                                  viewModel.cartData?.data?.product[index].id ??
-                                      '',
-                              count: (viewModel.cartData?.data?.product[index]
-                                          .count ??
-                                      1) +
-                                  1);
-                        },
-                        icon: const Icon(Icons.add_circle_outline),
-                      ),
-                    ],
+                  child: Text(
+                    'Add to cart',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: ColorManager.white,
+                          fontSize: 16.sp,
+                        ),
+                    // textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: 4.h),

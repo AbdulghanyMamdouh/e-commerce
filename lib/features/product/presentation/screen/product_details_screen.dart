@@ -10,6 +10,8 @@ import 'package:shopping_app/core/utils/custom_dialog.dart';
 import 'package:shopping_app/core/widgets/default_button_cart_product_screen.dart';
 import 'package:shopping_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:shopping_app/features/cart/presentation/cubit/cart_view_model.dart';
+import 'package:shopping_app/features/favorite/presentation/cubit/favorite_states.dart';
+import 'package:shopping_app/features/favorite/presentation/cubit/favorite_view_model.dart';
 import 'package:shopping_app/features/product/domain/entity/product_entity.dart';
 import 'package:read_more_text/read_more_text.dart';
 
@@ -21,7 +23,8 @@ class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});
   final CartViewModel viewModel =
       CartViewModel(cartUseCase: injectCartUseCase());
-
+  final FavoriteViewModel favoriteViewModel =
+      FavoriteViewModel(favoriteUseCase: injectFavoriteUseCase());
   @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as ProductEntity;
@@ -89,34 +92,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           );
                         }).toList(),
                       ),
-                    )
-                    //  CarouselSlider.builder(
-                    //   itemBuilder: (_, index, __) {
-                    //     return ClipRRect(
-                    //       borderRadius: BorderRadius.circular(15.r),
-                    //       child: CachedNetworkImage(
-                    //         imageUrl: product.images![index],
-                    //         height: double.infinity,
-                    //         width: double.infinity,
-                    //         fit: BoxFit.cover,
-                    //       ),
-                    //     );
-                    //   },
-                    //   itemCount: product.images!.length,
-                    //   disableGesture: false,
-                    //   options: CarouselOptions(
-                    //     autoPlay: true,
-                    //     viewportFraction: 0.97,
-                    //     enlargeCenterPage: true,
-                    //     enableInfiniteScroll: true,
-                    //     reverse: false,
-                    //     autoPlayInterval: Duration(seconds: 3),
-                    //     autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    //     autoPlayCurve: Curves.fastOutSlowIn,
-                    //     enlargeFactor: 0.3,
-                    //   ),
-                    // ),
-                    ),
+                    )),
                 Positioned(
                   left: 350.w,
                   top: 18.h,
@@ -124,13 +100,37 @@ class ProductDetailsScreen extends StatelessWidget {
                     radius: 24.r,
                     //todo: change color
                     backgroundColor: ColorManager.white,
-                    child: IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        //todo: change color
-                        color: ColorManager.primary,
-                        size: 30.0,
+                    child: BlocListener<FavoriteViewModel, FavoriteStates>(
+                      bloc: favoriteViewModel,
+                      listener: (context, state) async {
+                        if (state is AddToFavoriteLoadingState) {
+                          CustomDialog.showLoading(context);
+                        } else if (state is AddToFavoriteSuccessState) {
+                          CustomDialog.hideLoading(context);
+
+                          // todo : show message
+                          CustomDialog.showMessage(
+                            state.sucMsg,
+                          );
+                        } else if (state is AddToFavoriteErrorState) {
+                          CustomDialog.hideLoading(context);
+                          // todo : show message
+                          CustomDialog.showMessage(
+                            state.errMsg,
+                          );
+                        }
+                      },
+                      child: IconButton(
+                        onPressed: () async {
+                          await favoriteViewModel.addProductToWishList(
+                              productId: product.id!);
+                        },
+                        icon: const Icon(
+                          Icons.favorite_border,
+                          //todo: change color
+                          color: ColorManager.primary,
+                          size: 30.0,
+                        ),
                       ),
                     ),
                   ),
@@ -330,8 +330,7 @@ class ProductDetailsScreen extends StatelessWidget {
               listener: (context, state) async {
                 if (state is AddToCartLoadingState) {
                   CustomDialog.showLoading(context);
-                }
-                if (state is AddToCartSuccessState) {
+                } else if (state is AddToCartSuccessState) {
                   CustomDialog.hideLoading(context);
 
                   // todo : show message

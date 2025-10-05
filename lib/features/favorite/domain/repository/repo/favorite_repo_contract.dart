@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:shopping_app/core/utils/failure.dart';
-import 'package:shopping_app/features/favorite/domain/entity/favorite_product_Entity.dart';
+import 'package:shopping_app/features/favorite/domain/entity/favorite_product_entity.dart';
 
 abstract class FavoriteRepoContract {
   Future<Either<Failures, String>> addProductToWishList(

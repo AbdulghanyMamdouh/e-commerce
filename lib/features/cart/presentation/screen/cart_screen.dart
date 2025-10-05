@@ -188,7 +188,7 @@ class CartScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 30.w,
+                          width: 10.w,
                         ),
                         DefaultButtonCartProductScreen(
                           icon: const Icon(Icons.arrow_forward),

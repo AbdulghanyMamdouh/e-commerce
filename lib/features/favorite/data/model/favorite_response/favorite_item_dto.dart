@@ -1,7 +1,7 @@
 import 'package:shopping_app/features/favorite/domain/entity/favorite_item_entity.dart';
 
 class FavoriteItemDTO extends FavoriteItemEntity {
-  List<String>? images;
+  // List<String>? images;
 
   int? ratingsQuantity;
 
@@ -11,7 +11,7 @@ class FavoriteItemDTO extends FavoriteItemEntity {
   double? ratingsAverage;
 
   FavoriteItemDTO({
-    this.images,
+    // this.images,
     this.ratingsQuantity,
     required super.id,
     required super.title,
@@ -24,7 +24,7 @@ class FavoriteItemDTO extends FavoriteItemEntity {
 
   factory FavoriteItemDTO.fromJson(Map<String, dynamic> json) =>
       FavoriteItemDTO(
-        images: json['images'] as List<String>?,
+        // images: json['images'] as List<String>?,
         ratingsQuantity: json['ratingsQuantity'] as int?,
         id: json['_id'] as String,
         title: json['title'] as String,

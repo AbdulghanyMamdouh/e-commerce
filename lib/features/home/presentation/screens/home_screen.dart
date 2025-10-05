@@ -8,13 +8,14 @@ import 'package:shopping_app/features/home/presentation/widgets/custom_bottom_na
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   static const String routeName = '/home';
-  final HomeViewModel viewModel = HomeViewModel(useCase: injectHomeUseCase());
+  // final HomeViewModel viewModel = HomeViewModel(useCase: injectHomeUseCase());
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeStates>(
-      bloc: viewModel,
+      // bloc: viewModel,
       builder: (context, state) {
+        final viewModel = context.read<HomeViewModel>();
         return SafeArea(
           child: Scaffold(
             bottomNavigationBar: customBottomNavigationBar(

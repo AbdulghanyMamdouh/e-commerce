@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:shopping_app/core/utils/failure.dart';
-import 'package:shopping_app/features/favorite/domain/entity/favorite_product_Entity.dart';
+import 'package:shopping_app/features/favorite/domain/entity/favorite_product_entity.dart';
 import 'package:shopping_app/features/favorite/domain/repository/data_source/favorite_remote_data_source_contract.dart';
 import 'package:shopping_app/features/favorite/domain/repository/repo/favorite_repo_contract.dart';
 

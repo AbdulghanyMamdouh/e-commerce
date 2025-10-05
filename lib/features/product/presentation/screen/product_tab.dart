@@ -21,17 +21,5 @@ class ProductTab extends StatelessWidget {
         Expanded(child: ProductSection()),
       ],
     );
-    //  Container(
-    //   padding: EdgeInsets.all(16.w),
-    //   child: Column(
-    //     children: [
-    //       const CustomAppBar(),
-    //       SizedBox(
-    //         height: 16.h,
-    //       ),
-    //       ProductSection(),
-    //     ],
-    //   ),
-    // );
   }
 }
