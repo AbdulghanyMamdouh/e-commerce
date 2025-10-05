@@ -13,6 +13,12 @@ import 'package:shopping_app/features/cart/data/repository/data_source/cart_remo
 import 'package:shopping_app/features/cart/data/repository/repo/cart_repository_impl.dart';
 import 'package:shopping_app/features/cart/domain/repository/repo/cart_repository_contract.dart';
 import 'package:shopping_app/features/cart/domain/use_case/cart_use_case.dart';
+import 'package:shopping_app/features/favorite/data/manager/favorite_api_manager.dart';
+import 'package:shopping_app/features/favorite/data/repository/data_source/favorite_api_remote_data_source_impl.dart';
+import 'package:shopping_app/features/favorite/data/repository/repo/favorite_repo_impl.dart';
+import 'package:shopping_app/features/favorite/domain/repository/data_source/favorite_remote_data_source_contract.dart';
+import 'package:shopping_app/features/favorite/domain/repository/repo/favorite_repo_contract.dart';
+import 'package:shopping_app/features/favorite/domain/use_case/favorite_use_case.dart';
 import 'package:shopping_app/features/home/data/manager/home_tab_api_manager.dart';
 import 'package:shopping_app/features/home/data/repository/data_source/home_api_remote_data_source_impl.dart';
 import 'package:shopping_app/features/home/data/repository/data_source/home_remote_data_source_contract.dart';
@@ -25,6 +31,20 @@ import 'package:shopping_app/features/product/data/repository/data_source/produc
 import 'package:shopping_app/features/product/data/repository/repository/product_repository_impl.dart';
 import 'package:shopping_app/features/product/domain/repository/product_repository_contruct.dart';
 import 'package:shopping_app/features/product/domain/use_cases/get_all_products_use_case.dart';
+
+FavoriteUseCase injectFavoriteUseCase() {
+  return FavoriteUseCase(favoriteRepoContract: injectFavoriteRepoContract());
+}
+
+FavoriteRepoContract injectFavoriteRepoContract() {
+  return FavoriteRepoImpl(
+      remoteDataSource: injectFavoriteRemoteDataSourceContract());
+}
+
+FavoriteRemoteDataSourceContract injectFavoriteRemoteDataSourceContract() {
+  return FavoriteApiRemoteDataSourceImpl(
+      favoriteApiManager: FavoriteApiManager.getInstance());
+}
 
 CartUseCase injectCartUseCase() {
   return CartUseCase(cartRepositoryContract: injectCartRepositoryContract());

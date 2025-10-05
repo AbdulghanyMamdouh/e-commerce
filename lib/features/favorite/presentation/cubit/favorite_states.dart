@@ -1,4 +1,4 @@
-import 'package:shopping_app/features/favorite/domain/entity/favorite_product_Entity.dart';
+import 'package:shopping_app/features/favorite/domain/entity/favorite_product_entity.dart';
 
 abstract class FavoriteStates {}
 
