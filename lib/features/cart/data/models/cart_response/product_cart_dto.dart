@@ -4,7 +4,7 @@ class ProductCartDTO extends ProductCartEntity {
   ProductCartDTO({
     super.count,
     super.id,
-    super.products,
+    // super.products,
     super.price,
     required super.title,
     required super.coverImageURL,

@@ -1,9 +1,9 @@
-import 'package:shopping_app/features/cart/data/models/cart_response/product_cart_dto.dart';
+import 'package:shopping_app/features/cart/domain/entity/product_cart_entity.dart';
 
 class CartItemEntity {
   String id;
 
-  List<ProductCartDTO> product;
+  List<ProductCartEntity> product;
 
   int totalCartPrice;
 

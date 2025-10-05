@@ -17,9 +17,11 @@ class ProductDetailsScreen extends StatelessWidget {
   static const String routeName = 'product_screen';
   final formatter = NumberFormat.compact(locale: 'en')
     ..maximumFractionDigits = 1;
+
+  ProductDetailsScreen({super.key});
   final CartViewModel viewModel =
       CartViewModel(cartUseCase: injectCartUseCase());
-  ProductDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as ProductEntity;
